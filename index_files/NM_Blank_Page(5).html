@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0090)http://rnt.sectur.gob.mx/UbicacionPSTUnico.html?condicion=%20Where%20Id_PST%20in%20(71452) -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">	
+    <!--<meta charset="UTF-8" />-->
+	
+    <!--<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />-->
+    <meta name="viewport" content="width-device-width">
+	<title>Ubicación de los prestadores de servicio seleccionados.</title>
+    <link href="./mensajes.css" rel="stylesheet" type="text/css">
+    
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map_canvas {
+            height: 100%;
+        }
+
+
+        .modalmask {
+            position: fixed;
+            font-family: Arial, sans-serif;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 99999;
+            opacity: 0;
+            -webkit-transition: opacity 400ms ease-in;
+            -moz-transition: opacity 400ms ease-in;
+            transition: opacity 400ms ease-in;
+            pointer-events: none;
+        }
+
+        .modalmask:target {
+            opacity: 1;
+            pointer-events:initial; /* auto; */
+        }
+
+        .modalbox {
+            width: 400px;
+            position: relative;
+            padding: 5px 20px 13px 20px;
+            background: #fff;
+            border-radius: 3px;
+            -webkit-transition: all 500ms ease-in;
+            -moz-transition: all 500ms ease-in;
+            transition: all 500ms ease-in;
+        }
+
+        .movedown {
+            margin: 0 auto;
+        }
+
+        .rotate {
+            margin: 10% auto;
+            -webkit-transform: scale(-5,-5);
+            transform: scale(-5,-5);
+        }
+
+        .resize {
+            margin: 5% auto;
+            width: 0;
+            height: 0;
+        }
+
+        .modalmask:target .movedown {
+            margin: 10% auto;
+        }
+
+        .modalmask:target .rotate {
+            transform: rotate(360deg) scale(1,1);
+            -webkit-transform: rotate(360deg) scale(1,1);
+        }
+
+        .modalmask:target .resize {
+            width: 500px;
+            height: 550px;
+        }
+
+        .close {
+            background: #606061;
+            color: #FFFFFF;
+            line-height: 25px;
+            position: absolute;
+            right: 1px;
+            text-align: center;
+            top: 1px;
+            width: 24px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .close:hover {
+            background: #FAAC58;
+            color: #222;
+        }
+
+        .infoWindow {
+            font-size: 24px;
+            width: 250px;
+            height: 300px;
+            color: #ff0000;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #content {
+            height: 300px; 
+            background-color:white; 
+            margin-top: 0;
+            border: 1px solid #000;
+        }
+
+        .wrapper {
+        border: 1px dashed red;
+        height: 150px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 150px;
+        }
+        
+        
+        
+        
+        .TFtable{
+		width:100%; 
+		border-collapse:collapse; 
+		}
+	    .TFtable td{ 
+		    padding:7px; border:#4e95f4 0px solid;
+	    }
+	    /* provide some minimal visual accomodation for IE8 and below */
+	    .TFtable tr{
+		    background: #b8d1f3;
+	    }
+	    /*  Define the background color for all the ODD background rows  */
+	    .TFtable tr:nth-child(odd){ 
+		    background: white;
+	    }
+	    /*  Define the background color for all the EVEN background rows  */
+	    .TFtable tr:nth-child(even){
+		    background: #dae5f4;
+	    }
+        
+    </style>
+      <link href="./estiloVentanaModal.css" rel="stylesheet" type="text/css"> 
+      <script type="text/javascript" src="./jquery-1.7.min.js.descarga"></script>
+      <script type="text/javascript" src="./common.js.descarga">
+    </script>
+    <link rel="stylesheet" href="./screen.css" type="text/css" media="all">
+    
+     <script type="text/javascript">
+	 
+	 function fCarga(){
+		 showMessage();
+		 MuestraPuntos();
+		 hideMessage();
+		 }
+	 
+	 function showMessage() {
+		$("#mensajeEspera").show();
+	}
+
+	 function hideMessage() {
+	   $("#mensajeEspera").hide();
+	}
+	
+	 function replaceAll(text, busca, reemplaza) {
+	    while (text.toString().indexOf(busca) != -1)
+	        text = text.toString().replace(busca, reemplaza);
+		
+	    return text;
+	}
+	 
+	 function getVarsUrl(){
+	    var url = location.search.replace("?", "");
+	    url = replaceAll(url, "%27", "'");
+	    url = replaceAll(url, "%20", " ");
+	    var arrUrl = url.split("&");
+	    var urlObj = {};
+	    for (var i = 0; i < arrUrl.length; i++) {
+	        try {
+	            var x = arrUrl[i].split("=");
+	            urlObj[x[0]] = x[1];
+	        }
+	        catch (e)
+	        {
+	            alert(e);
+	        }
+	        
+		}
+		return urlObj;
+	}
+	 
+	  function downloadUrl(url, callback) {
+	    try {
+	        var request = window.ActiveXObject ?
+                new ActiveXObject('Microsoft.XMLHTTP') :
+                new XMLHttpRequest;
+
+	        request.onreadystatechange = function () {
+	            if (request.readyState == 4) {
+	                request.onreadystatechange = doNothing;
+	                callback(request, request.status);
+	            }
+	        };
+	        request.open('GET', url, true);
+	        request.send(null);
+	    }
+	    catch (e)
+	    {
+	        alert(e.message);
+	    }
+    }
+	
+	 function doNothing() {}
+	  
+	 function formattedDate(date) {
+	    var d = new Date(date || Date.now()),
+        month = '' + (d.getMonth() + 1),
+        day = '' + (d.getDate() + 1),
+        year = d.getFullYear();
+
+	    if (month.length < 2) month = '0' + month;
+	    if (day.length < 2) day = '0' + day;
+
+	    return day + '/' + month + '/' + year;
+	}
+	  
+	 function MuestraPuntos() {
+	    var parametros = getVarsUrl();
+	    var valorParametro = parametros.condicion;
+	    // Vamos a crear el archivo XML con los datos en base a la condición que se obtuvo.
+	    try{
+		    valorParametro = valorParametro.replace("SInt_IdTipoPST", "G.SInt_IdTipoPST");
+			console.log("Empieza ...");
+			
+			$.get("DatosUbiPSTNew.php?SqlCondicion=" + valorParametro,function (data){
+				$(data).each(function(row) {
+					var sTipoPST = data.SInt_IdTipoPST;
+	                var iPST = data.Id_PST;
+					var sNomComer = data.Var_NomComercial;
+					var sRazonSocial = data.Var_RazonSocial;
+					var sDireccion = data.Var_DomCalle +  ' ' + 
+					                 data.Var_DomColonia + ' ' + 
+									 data.Var_DescMunic + ' ' + 
+									 data.Var_DescEdo;
+					var sDomCodPost = data.Var_DomCodPost;
+					var sEmail = data.Var_Email;
+					var sWEB = data.Var_WEB;
+					var sDirIcono = data.Var_DirIcono;
+					var sLatUbic = data.Dc_LatUbic;
+	                var sLngUbica = data.Dc_LngUbica;
+	                var sTelefono = data.Var_Telefono;
+	                var sRNTFolio = data.Var_RNTFolio;
+	                var sFechaSol = data.Dt_FechaSol;
+					sFechaSol = formattedDate(sFechaSol);
+                    var sNomPST = data.Var_NomPST;
+                    if (sEmail == 'NULL')
+	                    sEmail = '&nbsp;';
+	                if (sTelefono == null)
+	                    sTelefono = '&nbsp;';
+						
+					$('#tdDomicilio').html(sDireccion);
+					$('#tdNomComercial').html("<h2>"+sNomComer+"</h2>");
+					$('#tdWeb').html(sWEB);
+					$('#tdEmail').html(sEmail);
+					$('#tdTelefono').html(sTelefono);
+					$('#tdRNTFolio').html(sRNTFolio);
+					$('#tdFechaSol').html(sFechaSol);
+					$('#tdNomPST').html(sNomPST);
+					$('#aWeb').prop("href", "http://"+sWEB);
+					
+                });
+				},'json');
+				
+				console.log("Termina ...");
+	    }
+	    catch(e)
+	    {
+		    alert(e);
+	    }
+	}
+     </script>   
+  </head>
+
+    <body onload="fCarga();" bgcolor="#A8F0FD" marginwidth="0" marginheight="0">
+        <table style="width: 60%; height: 40%; border: 1px solid black;" align="center">
+            <tbody><tr>
+            	<td style="width:60%; height:60%; " id="divTabla">
+                
+                	<table class="TFtable">
+                    	<tbody><tr>
+                        	<th colspan="2" id="tdNomComercial" align="center"><h2> HOTEL XCARET MEXICO</h2></th>
+                        </tr>
+	            		<tr>
+                        	<td><b>Domicilio..:</b></td>
+                            <td id="tdDomicilio">Carretera Federal Chetumal-Puerto Ju&aacute;rez, Av. Solidaridad 2-Kil&oacute;metro 282 Lt 023, 77710 Playa del Carmen, Q.R.</td>
+                        </tr>
+		                <tr>
+                        	<td><b>Página WEB:</b></td>
+                            <td id="tdWeb">https://mexicohotelxcaret.com/</td>
+                        </tr>
+	    	            <tr>
+                        	<td><b>Correo electrónico:</b></td>
+                            <td id="tdEmail">contacto@mexicohotelxcaret.com</td>
+                        </tr>
+	        	        <tr>
+                        	<td><b>Teléfono:</b></td>
+                            <td id="tdTelefono">800 099 0776</td>
+                        </tr>
+	            	    <tr>
+                        	<td><b>RNT:</b></td>
+                            <td id="tdRNTFolio">01230086816</td>
+                        </tr>
+                        <tr>
+                        	<td><b>Fecha solicitud al RNT:</b></td>
+                            <td id="tdFechaSol">20/12/2017</td>
+                        </tr>
+	                    <tr>
+                        	<td><b>Tipo prestador.:</b></td>
+                            <td id="tdNomPST">HOSPEDAJE</td>
+                        </tr>
+					</tbody></table>
+		            <table width="50%">
+                    	<tbody><tr>
+		                    <td>
+                            	<a id="aWeb" target="_blank" href="https://hotelmexicoxcaret.com.mx/">
+                                	<img src="./ImgPaginaWeb.png" alt="Página WEB" title="Página Web">
+                                </a>
+                            </td>
+                            <td>
+                            	<a href="../Hotel Xcaret Mexico.pdf" "="" +="" 'javascript:window.open("mostrarreportepst.html?id_pst=" + idPrestador[marker.posicionArray] + " ","","width="1000px,height=500px,left=50,top=50,toolbar=no&quot;);void" 0'="" "'"="" '="">
+                                <img src="./ImgReporte.png" alt="Reporte del turista" title="Reporte del turista">
+                                </a>
+                            </td>
+                            <td><a href="tel://8000990260"><img src="./Img_Mappir.png" width="35" height="35" alt="Traza tu ruta con la SCT" title="Traza tu ruta con la SCT"></a>
+                          </td>
+                        </tr>
+                    </tbody></table>
+            	</td>
+            </tr>
+        </tbody></table>
+    <div id="mensaje">
+          <div id="mensajeEspera" style="display: none;"><img src="./loading.gif" width="50" height="50"> Cargando... </div>
+   	</div>
+     
+  
+  
+</body><!--script type="text/javascript">
+    // Rotar imágenes
+    var howOften = 5; //number often in seconds to rotate
+    var current = 0; //start the counter at 0
+    var ns6 = document.getElementById && !document.all; //detect netscape 6
+
+    function rotater() {
+        if (arrayImagenes.length <= 0) {
+            arrayImagenes[current] = '';
+        }
+        if (document.layers) {
+            document.placeholderlayer.document.write(arrayImagenes[current]);
+            document.placeholderlayer.document.close();
+        }
+        if (ns6) document.getElementById("placeholderdiv").innerHTML = arrayImagenes[current]
+        if (document.all)
+            placeholderdiv.innerHTML = arrayImagenes[current];
+        current = (current == arrayImagenes.length - 1) ? 0 : current + 1; //increment or reset
+        setTimeout("rotater()", howOften * 1000);
+    }
+    window.onload = rotater;
+  </script--></html>

@@ -1,0 +1,271 @@
+function Grd_TurGeneralesHosp_int_cvemunic_getValue(seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  return $("#id_sc_field_int_cvemunic" + seqRow).html();
+}
+
+function Grd_TurGeneralesHosp_int_cvemunic_setValue(newValue, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  $("#id_sc_field_int_cvemunic" + seqRow).html(newValue);
+}
+
+function Grd_TurGeneralesHosp_var_nomcomercial_getValue(seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  return $("#id_sc_field_var_nomcomercial" + seqRow).html();
+}
+
+function Grd_TurGeneralesHosp_var_nomcomercial_setValue(newValue, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  $("#id_sc_field_var_nomcomercial" + seqRow).html(newValue);
+}
+
+function Grd_TurGeneralesHosp_btnconsulta_getValue(seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  return $("#id_sc_field_btnconsulta" + seqRow).find("img").attr("src");
+}
+
+function Grd_TurGeneralesHosp_btnconsulta_setValue(newValue, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  $("#id_sc_field_btnconsulta" + seqRow).find("img").attr("src", newValue);
+}
+
+function Grd_TurGeneralesHosp_id_pst_getValue(seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  return $("#id_sc_field_Hidden_id_pst" + seqRow).html();
+}
+
+function Grd_TurGeneralesHosp_id_pst_setValue(newValue, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  $("#id_sc_field_id_pst" + seqRow).html(newValue);
+}
+function Grd_TurGeneralesHosp_id_pst_Hidden_setValue(newValue, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  $("#id_sc_field_Hidden_id_pst" + seqRow).html(newValue);
+}
+
+function Grd_TurGeneralesHosp_int_cveestado_getValue(seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  return $("#id_sc_field_int_cveestado" + seqRow).html();
+}
+
+function Grd_TurGeneralesHosp_int_cveestado_setValue(newValue, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  $("#id_sc_field_int_cveestado" + seqRow).html(newValue);
+}
+
+function Grd_TurGeneralesHosp_sint_idtipopst_getValue(seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  return $("#id_sc_field_sint_idtipopst" + seqRow).html();
+}
+
+function Grd_TurGeneralesHosp_sint_idtipopst_setValue(newValue, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  $("#id_sc_field_sint_idtipopst" + seqRow).html(newValue);
+}
+
+function Grd_TurGeneralesHosp_getValue(field, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  if ("int_cvemunic" == field) {
+    return Grd_TurGeneralesHosp_int_cvemunic_getValue(seqRow);
+  }
+  if ("var_nomcomercial" == field) {
+    return Grd_TurGeneralesHosp_var_nomcomercial_getValue(seqRow);
+  }
+  if ("btnconsulta" == field) {
+    return Grd_TurGeneralesHosp_btnconsulta_getValue(seqRow);
+  }
+  if ("id_pst" == field) {
+    return Grd_TurGeneralesHosp_id_pst_getValue(seqRow);
+  }
+  if ("int_cveestado" == field) {
+    return Grd_TurGeneralesHosp_int_cveestado_getValue(seqRow);
+  }
+  if ("sint_idtipopst" == field) {
+    return Grd_TurGeneralesHosp_sint_idtipopst_getValue(seqRow);
+  }
+}
+
+function Grd_TurGeneralesHosp_setValue(field, newValue, seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  if ("int_cvemunic" == field) {
+    Grd_TurGeneralesHosp_int_cvemunic_setValue(newValue, seqRow);
+  }
+  if ("var_nomcomercial" == field) {
+    Grd_TurGeneralesHosp_var_nomcomercial_setValue(newValue, seqRow);
+  }
+  if ("btnconsulta" == field) {
+    Grd_TurGeneralesHosp_btnconsulta_setValue(newValue, seqRow);
+  }
+  if ("id_pst" == field) {
+    Grd_TurGeneralesHosp_id_pst_setValue(newValue, seqRow);
+  }
+  if ("int_cveestado" == field) {
+    Grd_TurGeneralesHosp_int_cveestado_setValue(newValue, seqRow);
+  }
+  if ("sint_idtipopst" == field) {
+    Grd_TurGeneralesHosp_sint_idtipopst_setValue(newValue, seqRow);
+  }
+  if ("id_pst_Hidden" == field) {
+    Grd_TurGeneralesHosp_id_pst_Hidden_setValue(newValue, seqRow);
+  }
+}
+
+function scJQAddEvents(seqRow) {
+  seqRow = scSeqNormalize(seqRow);
+  $("#id_sc_field_btnconsulta" + seqRow).click(function () {
+    $.ajax({
+      type: "POST",
+      url: "index.php",
+      data: "nmgp_opcao=ajax_event&nmgp_event=btnconsulta_onClick&script_case_init=" + document.F3.script_case_init.value + "&script_case_session=" + document.F3.script_case_session.value + "&btnconsulta=" + Grd_TurGeneralesHosp_getValue("btnconsulta", seqRow) + "",
+      success: function(jsonReturn) {
+        var i, fieldDisplay, oResp;
+        eval("oResp = " + jsonReturn);
+        if (oResp["setValue"]) {
+          for (i = 0; i < oResp["setValue"].length; i++) {
+            Grd_TurGeneralesHosp_setValue(oResp["setValue"][i]["field"], oResp["setValue"][i]["value"], seqRow);
+          }
+        }
+        if (oResp["fieldDisplay"]) {
+          for (i = 0; i < oResp["fieldDisplay"].length; i++) {
+            if ("off" == oResp["fieldDisplay"][i]["status"]) {
+              $("#id_sc_field_" + oResp["fieldDisplay"][i]["field"] + seqRow).hide();
+            }
+            else {
+              $("#id_sc_field_" + oResp["fieldDisplay"][i]["field"] + seqRow).show();
+            }
+          }
+        }
+        if (oResp["Refresh"]) {
+           nm_gp_move('igual');
+        }
+        if (oResp["redirInfo"]) {
+           scAjaxRedir(oResp);
+        }
+        if (oResp["htmOutput"]) {
+           scAjaxShowDebug(oResp);
+        }
+      }
+    });
+  }).mouseover(function() { $(this).css("cursor", "pointer"); })
+    .mouseout(function() { $(this).css("cursor", "pointer"); })
+    .addClass(($("#id_sc_field_BtnConsulta" + seqRow).parent().hasClass("scGridFieldOddFont") ? "scGridFieldOddLink" : "scGridFieldEvenLink"));
+
+  $("#id_sc_field_imagenes" + seqRow).click(function () {
+    $.ajax({
+      type: "POST",
+      url: "index.php",
+      data: "nmgp_opcao=ajax_event&nmgp_event=imagenes_onClick&script_case_init=" + document.F3.script_case_init.value + "&script_case_session=" + document.F3.script_case_session.value + "&id_pst=" + Grd_TurGeneralesHosp_getValue("id_pst", seqRow) + "",
+      success: function(jsonReturn) {
+        var i, fieldDisplay, oResp;
+        eval("oResp = " + jsonReturn);
+        if (oResp["setValue"]) {
+          for (i = 0; i < oResp["setValue"].length; i++) {
+            Grd_TurGeneralesHosp_setValue(oResp["setValue"][i]["field"], oResp["setValue"][i]["value"], seqRow);
+          }
+        }
+        if (oResp["fieldDisplay"]) {
+          for (i = 0; i < oResp["fieldDisplay"].length; i++) {
+            if ("off" == oResp["fieldDisplay"][i]["status"]) {
+              $("#id_sc_field_" + oResp["fieldDisplay"][i]["field"] + seqRow).hide();
+            }
+            else {
+              $("#id_sc_field_" + oResp["fieldDisplay"][i]["field"] + seqRow).show();
+            }
+          }
+        }
+        if (oResp["Refresh"]) {
+           nm_gp_move('igual');
+        }
+        if (oResp["redirInfo"]) {
+           scAjaxRedir(oResp);
+        }
+        if (oResp["htmOutput"]) {
+           scAjaxShowDebug(oResp);
+        }
+      }
+    });
+  }).mouseover(function() { $(this).css("cursor", "pointer"); })
+    .mouseout(function() { $(this).css("cursor", "pointer"); })
+    .addClass(($("#id_sc_field_Imagenes" + seqRow).parent().hasClass("scGridFieldOddFont") ? "scGridFieldOddLink" : "scGridFieldEvenLink"));
+
+}
+
+function scSeqNormalize(seqRow) {
+  var newSeqRow = seqRow.toString();
+  if ("" == newSeqRow) {
+    return "";
+  }
+  if ("_" != newSeqRow.substr(0, 1)) {
+    return "_" + newSeqRow;
+  }
+  return newSeqRow;
+}
+function ajax_navigate(opc, parm)
+{
+    scAjaxProcOn();
+    $.ajax({
+      type: "POST",
+      url: "index.php",
+      data: "nmgp_opcao=ajax_navigate&script_case_init=" + document.F4.script_case_init.value + "&script_case_session=" + document.F4.script_case_session.value + "&opc=" + opc  + "&parm=" + parm,
+      success: function(jsonNavigate) {
+        var i, oResp;
+        eval("oResp = " + jsonNavigate);
+        document.getElementById('nmsc_iframe_liga_A_Grd_TurGeneralesHosp').src = 'NM_Blank_Page.htm';
+        document.getElementById('nmsc_iframe_liga_E_Grd_TurGeneralesHosp').src = 'NM_Blank_Page.htm';
+        document.getElementById('nmsc_iframe_liga_D_Grd_TurGeneralesHosp').src = 'NM_Blank_Page.htm';
+        document.getElementById('nmsc_iframe_liga_B_Grd_TurGeneralesHosp').src = 'NM_Blank_Page.htm';
+        document.getElementById('nmsc_iframe_liga_A_Grd_TurGeneralesHosp').style.height = '0px';
+        document.getElementById('nmsc_iframe_liga_E_Grd_TurGeneralesHosp').style.height = '0px';
+        document.getElementById('nmsc_iframe_liga_D_Grd_TurGeneralesHosp').style.height = '0px';
+        document.getElementById('nmsc_iframe_liga_B_Grd_TurGeneralesHosp').style.height = '0px';
+        document.getElementById('nmsc_iframe_liga_A_Grd_TurGeneralesHosp').style.width  = '0px';
+        document.getElementById('nmsc_iframe_liga_E_Grd_TurGeneralesHosp').style.width  = '0px';
+        document.getElementById('nmsc_iframe_liga_D_Grd_TurGeneralesHosp').style.width  = '0px';
+        document.getElementById('nmsc_iframe_liga_B_Grd_TurGeneralesHosp').style.width  = '0px';
+        if (oResp["redirInfo"]) {
+           scAjaxRedir(oResp);
+        }
+        if (oResp["setValue"]) {
+          for (i = 0; i < oResp["setValue"].length; i++) {
+               $("#" + oResp["setValue"][i]["field"]).html(oResp["setValue"][i]["value"]);
+          }
+        }
+        if (oResp["setVar"]) {
+          for (i = 0; i < oResp["setVar"].length; i++) {
+               eval (oResp["setVar"][i]["var"] + ' = \"' + oResp["setVar"][i]["value"] + '\"');
+          }
+        }
+        if (oResp["setDisplay"]) {
+          for (i = 0; i < oResp["setDisplay"].length; i++) {
+               document.getElementById(oResp["setDisplay"][i]["field"]).style.display = oResp["setDisplay"][i]["value"];
+          }
+        }
+        if (oResp["setDisabled"]) {
+          for (i = 0; i < oResp["setDisabled"].length; i++) {
+               document.getElementById(oResp["setDisabled"][i]["field"]).disabled = oResp["setDisabled"][i]["value"];
+          }
+        }
+        if (oResp["setClass"]) {
+          for (i = 0; i < oResp["setClass"].length; i++) {
+               document.getElementById(oResp["setClass"][i]["field"]).className = oResp["setClass"][i]["value"];
+          }
+        }
+        if (oResp["setSrc"]) {
+          for (i = 0; i < oResp["setSrc"].length; i++) {
+               document.getElementById(oResp["setSrc"][i]["field"]).src = oResp["setSrc"][i]["value"];
+          }
+        }
+        if (oResp["redirInfo"]) {
+           scAjaxRedir(oResp);
+        }
+        if (oResp["htmOutput"]) {
+           scAjaxShowDebug(oResp);
+        }
+        if (!SC_Link_View)
+        {
+            SC_init_jquery();
+            tb_init('a.thickbox, area.thickbox, input.thickbox');
+        }
+        scAjaxProcOff();
+      }
+    });
+}

@@ -1,0 +1,33 @@
+﻿#mensaje {
+    position: absolute;
+    align-content: center;
+    background-color: transparent;
+    width: 100%;
+    top: 150px;
+    left: 0px;
+    right: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+#mensajeEspera {
+    width: 20%;
+    height: 100px;
+    color: yellow;
+    text-align: center;
+    padding: 5px;
+    position: relative;
+    background-color: black;
+    font-size: xx-large;
+    align-content: center;
+    display: inline-table;
+    text-shadow: 5px 5px 5px #FF0000;
+    /*para Firefox*/
+    -moz-border-radius: 15px 15px 15px 15px;
+    /*para Safari y Chrome*/
+    -webkit-border-radius: 15px 15px 15px 15px;
+    /* para Opera */
+    border-radius: 15px 15px 15px 15px;
+    -webkit-box-shadow: 4px 4px 10px #999;
+    -moz-box-shadow: 4px 4px 10px #999;
+}
